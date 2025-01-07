@@ -1,6 +1,6 @@
 name: Request Access to Private Repository
 description: Submit this form to request access to a private repository.
-title: "[Access Request] Request access for {username}"
+title: "[Access Request] Request access to private repository"
 labels: access-request
 body:
   - type: markdown
