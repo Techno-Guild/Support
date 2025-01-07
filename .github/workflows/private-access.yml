@@ -4,7 +4,7 @@ on:
   issues:
     types:
       - opened
-
+      
 jobs:
   invite-user:
     if: contains(github.event.issue.labels.*.name, 'access-request')
@@ -29,7 +29,7 @@ jobs:
           curl -X PUT \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/OWNER/PRIVATE_REPO/collaborators/$USERNAME \
+            https://api.github.com/repos/${OWNER}/${REPO}/collaborators/${USERNAME} \
             -d '{"permission": "pull"}'
 
       - name: Comment on Issue
@@ -41,7 +41,7 @@ jobs:
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             -d '{"body": "Hi @${{ github.event.issue.user.login }}, your request has been processed. You have been invited to the repository. Please check your email or GitHub notifications to accept the invitation."}' \
-            https://api.github.com/repos/OWNER/ORG_REPO/issues/${{ github.event.issue.number }}/comments
+            https://api.github.com/repos/Techno-Guild/Job-Seeker/issues/${{ github.event.issue.number }}/comments
 
       - name: Handle Errors
         if: failure()
