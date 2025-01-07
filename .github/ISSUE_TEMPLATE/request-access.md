@@ -1,8 +1,10 @@
 ---
-name: Request Access to Private Repository
+name: Request Access
 about: Submit this form to request read-only access to a private repository.
 title: "[Access Request] Request access for {username}"
 labels: access-request
+assignees: ''
+
 ---
 
 ## Request Access to Private Repository
