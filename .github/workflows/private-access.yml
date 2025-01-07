@@ -3,7 +3,7 @@ name: Process Access Requests
 on:
   issues:
     types:
-      - opened
+      - closed
 
 jobs:
   invite-user:
