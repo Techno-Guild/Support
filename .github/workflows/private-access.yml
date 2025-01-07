@@ -3,7 +3,7 @@ name: Process Access Requests
 on:
   issues:
     types:
-      - closed
+      - opened
 
 jobs:
   invite-user:
@@ -13,19 +13,19 @@ jobs:
     steps:
       - name: Invite User to Private Repo
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.GH_TOKEN }}
           USERNAME: ${{ github.event.issue.user.login }}
         run: |
           curl -X PUT \
-            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Authorization: token $TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/Techno-Guild/Job-Seeker/collaborators/${USERNAME}\
+            https://api.github.com/repos/Techno-Guild/Job-Seeker/collaborators/${USERNAME} \
             -d '{"permission": "pull"}'
 
       - name: Comment on Issue
         run: |
           curl -X POST \
-            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Authorization: token $TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             -d '{"body": "Hi @${{ github.event.issue.user.login }}, your request has been processed. You have been invited to the repository. Please check your email or GitHub notifications to accept the invitation."}' \
             https://api.github.com/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/issues/${{ github.event.issue.number }}/comments
