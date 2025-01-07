@@ -1,0 +1,30 @@
+name: Request Access to Private Repository
+description: Fill out the form to request read-only access to the private repository.
+title: "[Access Request] Request access for {username}"
+labels: access-request
+assignees: ""
+
+# Fields in the issue form
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Thank you for your interest in accessing our private repository!**  
+        Please fill out the following details to request access.
+
+  - type: input
+    id: github_username
+    attributes:
+      label: GitHub Username
+      description: Please enter your GitHub username (e.g., john-doe).
+      placeholder: Enter your GitHub username
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Terms and Conditions
+      description: By submitting this form, you agree to the terms of access, which is read-only.
+      options:
+        - label: I agree to the read-only access terms and conditions.
+          required: true
