@@ -4,44 +4,31 @@ on:
   issues:
     types:
       - closed
-      
+
 jobs:
   invite-user:
     if: contains(github.event.issue.labels.*.name, 'access-request')
     runs-on: ubuntu-latest
 
     steps:
-      - name: Extract GitHub Username from Issue
-        id: extract-username
-        run: |
-          echo "USERNAME=$(echo '${{ github.event.issue.body }}' | grep -oP '(?<=GitHub Username: ).*')" >> $ENV
-
-      - name: Validate Username
-        if: ${{ steps.extract-username.outputs.USERNAME }} != ''
-        run: |
-          echo "Extracted username: $USERNAME"
-        
       - name: Invite User to Private Repo
-        if: ${{ steps.extract-username.outputs.USERNAME }} != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.event.issue.user.login }}
         run: |
           curl -X PUT \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${OWNER}/${REPO}/collaborators/${USERNAME} \
+            https://api.github.com/repos/Techno-Guild/Job-Seeker/collaborators/${USERNAME}\
             -d '{"permission": "pull"}'
 
       - name: Comment on Issue
-        if: ${{ steps.extract-username.outputs.USERNAME }} != ''
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           curl -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             -d '{"body": "Hi @${{ github.event.issue.user.login }}, your request has been processed. You have been invited to the repository. Please check your email or GitHub notifications to accept the invitation."}' \
-            https://api.github.com/repos/Techno-Guild/Job-Seeker/issues/${{ github.event.issue.number }}/comments
+            https://api.github.com/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}/issues/${{ github.event.issue.number }}/comments
 
       - name: Handle Errors
         if: failure()
